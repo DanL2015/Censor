@@ -6,3 +6,5 @@ Idea:
 3. Blocks vision of private information when sharing screen
 
 *This is still a WIP, knowing my record it is never going to be finished
+**idk how to use AHK how do I make multiple windows stay on top
+***idk how to C++, how to make a vector of RenderWindows
