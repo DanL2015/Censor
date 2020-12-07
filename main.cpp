@@ -11,8 +11,8 @@ int windowy = 512;
 RenderWindow window(VideoMode(windowx, windowy), "Censor", Style::Close | Style::Titlebar);
 RenderWindow subWindows[10000];
 int subSize = 0;
-bool isFocused = true; //true if window is on top, false if window is not
-bool buttonPressed = false; // false if button is not pressed, true if button is
+bool isFocused = true;
+bool buttonPressed = false;
 bool moving[10000];
 bool resizing[10000];
 vector <int> direction[10000];
@@ -80,12 +80,9 @@ int main()
 				if (evnt.mouseButton.button == Mouse::Left)
 				{
 					Vector2i mousePos = Mouse::getPosition(window);
-					//cout << "Left button was pressed at: " << mousePos.x << " " << mousePos.y << endl;
 					if (mousePos.x >= 224 && mousePos.x <= 288 && mousePos.y >= 240 && mousePos.y <= 272)
 					{
 						buttonPressed = true;
-						//cout << "button pressed" << endl;
-						//create a new window
 						string title = to_string(subSize);
 						subWindows[subSize].create(VideoMode(800, 600), title, Style::None);
 						RectangleShape background;
@@ -94,20 +91,15 @@ int main()
 						subWindows[subSize].display();
 						subSize++;
 						window.requestFocus();
-						//system("taskkill /F /IM AutoHotkey.exe");
-						//fout << "Winset, Alwaysontop, toggle, " << title << endl;
-						// Windows command: taskkill /F /IM AutoHotkey.exe
-						// subWindows[subSize].requestFocus();
-						string fpathstring = "C:/Users/Daniel Liu/source/repos/Censor/Censor/focus_" + title + ".ahk";
+						string fpathstring = "focus_" + title + ".ahk";
 						const char* fpath = (fpathstring.c_str());
 						ofstream fout(fpath);
-						cout << "new file created" << endl;
 						string fdata("Winset, Alwaysontop, toggle, " + title);
 						fout << fdata << endl;
-						string bpathstring = "C:/Users/Daniel Liu/source/repos/Censor/Censor/focus.bat";
+						string bpathstring = "focus.bat";
 						const char* bpath = (bpathstring.c_str());
 						ofstream bout(bpath);
-						string bdata("\"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe\" \"C:\\Users\\Daniel Liu\\source\\repos\\Censor\\Censor\\focus_" + title + ".ahk\"");
+						string bdata("\"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe\" \"focus_" + title + ".ahk\"");
 						bout << bdata << endl;
 						thread2.terminate();
 						thread2.launch();
@@ -116,7 +108,6 @@ int main()
 			}
 			if (buttonPressed && (evnt.type == Event::MouseButtonReleased || !window.hasFocus()))
 			{
-				//cout << "button released" << endl;
 				buttonPressed = false;
 			}
 		}
@@ -226,7 +217,6 @@ int main()
 					}
 				}
 			}
-			// cout << resizing[i] << endl;
 			RectangleShape background;
 			background.setFillColor(Color::Black);
 			background.setSize(Vector2f(subWindows[i].getSize().x, subWindows[i].getSize().y));
