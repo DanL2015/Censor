@@ -6,8 +6,6 @@
 using namespace std;
 using namespace sf;
 
-ofstream fout("focus.ahk");
-
 int windowx = 512;
 int windowy = 512;
 RenderWindow window(VideoMode(windowx, windowy), "Censor", Style::Close | Style::Titlebar);
@@ -65,6 +63,16 @@ int main()
 		{
 			if (evnt.type == Event::Closed)
 			{
+				ofstream fout("focus.bat");
+				fout << "";
+				cout << subSize << endl;
+				for (int i = 0; i < subSize; i++)
+				{
+					string fpath = "focus_" + to_string(i) + ".ahk";
+					string command = "del -f " + fpath;
+					system(command.c_str());
+				}
+				system("taskkill /F /IM AutoHotkey.exe");
 				window.close();
 			}
 			if (evnt.type == Event::MouseButtonPressed)
@@ -86,10 +94,21 @@ int main()
 						subWindows[subSize].display();
 						subSize++;
 						window.requestFocus();
-						system("taskkill /F /IM AutoHotkey.exe");
-						fout << "Winset, Alwaysontop, toggle, " << title << endl;
+						//system("taskkill /F /IM AutoHotkey.exe");
+						//fout << "Winset, Alwaysontop, toggle, " << title << endl;
 						// Windows command: taskkill /F /IM AutoHotkey.exe
-						subWindows[subSize].requestFocus();
+						// subWindows[subSize].requestFocus();
+						string fpathstring = "C:/Users/Daniel Liu/source/repos/Censor/Censor/focus_" + title + ".ahk";
+						const char* fpath = (fpathstring.c_str());
+						ofstream fout(fpath);
+						cout << "new file created" << endl;
+						string fdata("Winset, Alwaysontop, toggle, " + title);
+						fout << fdata << endl;
+						string bpathstring = "C:/Users/Daniel Liu/source/repos/Censor/Censor/focus.bat";
+						const char* bpath = (bpathstring.c_str());
+						ofstream bout(bpath);
+						string bdata("\"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe\" \"C:\\Users\\Daniel Liu\\source\\repos\\Censor\\Censor\\focus_" + title + ".ahk\"");
+						bout << bdata << endl;
 						thread2.terminate();
 						thread2.launch();
 					}
